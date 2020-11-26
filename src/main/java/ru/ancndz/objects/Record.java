@@ -16,6 +16,12 @@ import java.util.Objects;
 @XmlRootElement
 public class Record {
 
+    @XmlTransient
+    public static String TABLE_NAME = "records";
+
+    @XmlTransient
+    private Integer ID = null;
+
     /**
      * Ретинг пробок
      */
@@ -65,12 +71,31 @@ public class Record {
         this.recordDateTimeEndString = convertToString(recordDateTimeEnd);
     }
 
+    public Record(int ID, int trafficRating, int trafficAccidents, LocalDateTime recordDateTimeStart, LocalDateTime recordDateTimeEnd) {
+        this.ID = ID;
+        this.trafficRating = trafficRating;
+        this.trafficAccidents = trafficAccidents;
+        this.recordDateTimeStart = recordDateTimeStart;
+        this.recordDateTimeEnd = recordDateTimeEnd;
+        this.recordDateTimeStartString = convertToString(recordDateTimeStart);
+        this.recordDateTimeEndString = convertToString(recordDateTimeEnd);
+    }
+
     private String convertToString(LocalDateTime dateTime) {
         return dateTime.format(formatter);
     }
 
     private LocalDateTime parseFromString(String dateTimeString) {
         return LocalDateTime.parse(dateTimeString, formatter);
+    }
+
+    @XmlTransient
+    public Integer getID() {
+        return ID;
+    }
+
+    public void setID(Integer ID) {
+        this.ID = ID;
     }
 
     public int getTrafficRating() {
@@ -94,6 +119,7 @@ public class Record {
     }
 
     public void setRecordDateTimeStart(LocalDateTime recordDateTimeStart) {
+        this.recordDateTimeStartString = convertToString(recordDateTimeStart);
         this.recordDateTimeStart = recordDateTimeStart;
     }
 
@@ -102,6 +128,7 @@ public class Record {
     }
 
     public void setRecordDateTimeEnd(LocalDateTime recordDateTimeEnd) {
+        this.recordDateTimeEndString = convertToString(recordDateTimeEnd);
         this.recordDateTimeEnd = recordDateTimeEnd;
     }
 
