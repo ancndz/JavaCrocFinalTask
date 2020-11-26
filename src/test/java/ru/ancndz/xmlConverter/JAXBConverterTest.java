@@ -30,15 +30,15 @@ public class JAXBConverterTest {
     @Test
     public void testFromXml() throws IOException {
         this.recordVault.addRecord(this.testRecord);
-        this.xmlString = jaxbConverter.toXml(this.recordVault.getHigherTrafficRecord());
+        this.xmlString = jaxbConverter.toXml(this.recordVault.getHighestTrafficRecord());
         Record recordFromXml = jaxbConverter.fromXml(this.xmlString, Record.class);
-        Assertions.assertEquals(this.recordVault.getHigherTrafficRecord(), recordFromXml);
+        Assertions.assertEquals(this.recordVault.getHighestTrafficRecord(), recordFromXml);
     }
 
     @Test
     public void testToXml() throws JsonProcessingException {
         this.recordVault.addRecord(this.testRecord);
-        this.xmlString = jaxbConverter.toXml(this.recordVault.getHigherTrafficRecord());
+        this.xmlString = jaxbConverter.toXml(this.recordVault.getHighestTrafficRecord());
         System.out.println(xmlString);
     }
 }

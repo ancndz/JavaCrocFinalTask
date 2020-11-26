@@ -36,3 +36,4 @@ target/
 
 # Test Resources
 src/test/resources/*
+src/main/resources/xmlFiles/*

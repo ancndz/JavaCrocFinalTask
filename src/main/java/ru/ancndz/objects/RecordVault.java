@@ -1,5 +1,6 @@
 package ru.ancndz.objects;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,16 +17,21 @@ public class RecordVault {
     /**
      * Запись с наибольшей загруженностью трафика
      */
-    private Record higherTrafficRecord;
+    private Record highestTrafficRecord;
+
+    public RecordVault() {
+        this.recordList = new ArrayList<>();
+        this.highestTrafficRecord = null;
+    }
 
     public RecordVault(List<Record> recordList) {
         this.recordList = recordList;
-        this.higherTrafficRecord = null;
+        this.highestTrafficRecord = null;
     }
 
-    public RecordVault(List<Record> recordList, Record higherTrafficRecord) {
+    public RecordVault(List<Record> recordList, Record highestTrafficRecord) {
         this.recordList = recordList;
-        this.higherTrafficRecord = higherTrafficRecord;
+        this.highestTrafficRecord = highestTrafficRecord;
     }
 
     /**
@@ -36,12 +42,12 @@ public class RecordVault {
     public Boolean addRecord(Record record) {
         this.recordList.add(record);
         // при добавлении новой записи тут же проверяем ее
-        if (higherTrafficRecord == null ||
-                record.getTrafficRating() > higherTrafficRecord.getTrafficRating() || (
-                (record.getTrafficRating() == higherTrafficRecord.getTrafficRating()) &&
-                        (record.getTrafficAccidents() > higherTrafficRecord.getTrafficAccidents()))
+        if (highestTrafficRecord == null ||
+                record.getTrafficRating() > highestTrafficRecord.getTrafficRating() || (
+                (record.getTrafficRating() == highestTrafficRecord.getTrafficRating()) &&
+                        (record.getTrafficAccidents() > highestTrafficRecord.getTrafficAccidents()))
             ) {
-            higherTrafficRecord = record;
+            highestTrafficRecord = record;
             return true;
         } else {
             return false;
@@ -58,7 +64,7 @@ public class RecordVault {
         return recordList;
     }
 
-    public Record getHigherTrafficRecord() {
-        return higherTrafficRecord;
+    public Record getHighestTrafficRecord() {
+        return highestTrafficRecord;
     }
 }
