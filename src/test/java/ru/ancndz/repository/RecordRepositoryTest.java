@@ -34,7 +34,7 @@ class RecordRepositoryTest {
 
     @AfterEach
     void cleanUp() {
-        recordRepository.trimTable();
+        recordRepository.deleteAll();
     }
 
     @Test

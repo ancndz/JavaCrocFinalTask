@@ -36,7 +36,7 @@ public class RecordRepository {
         statement.setTime(6, Time.valueOf(end_time));
     }
 
-    private List<Record> createRecord(ResultSet resultSet) throws SQLException {
+    private List<Record> createRecordFromResultSet(ResultSet resultSet) throws SQLException {
         List<Record> records = new ArrayList<>();
         while (resultSet.next()) {
             records.add(new Record(
@@ -74,7 +74,7 @@ public class RecordRepository {
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery("SELECT * FROM " + Record.TABLE_NAME);
-            return createRecord(resultSet);
+            return createRecordFromResultSet(resultSet);
         } catch (Exception e) {
             printQueryException(e);
         }
@@ -115,8 +115,8 @@ public class RecordRepository {
         }
     }
 
-    public void trimTable() {
-        String sqlQuery = "truncate " + Record.TABLE_NAME + " RESTART IDENTITY";
+    public void deleteAll() {
+        String sqlQuery = "truncate " + Record.TABLE_NAME;
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
             statement.execute();

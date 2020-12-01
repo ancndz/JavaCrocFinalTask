@@ -29,7 +29,7 @@ class CoreTest {
 
     @AfterEach
     void tearDown() {
-        core.recordRepository.trimTable();
+        core.recordRepository.deleteAll();
     }
 
     @Test
