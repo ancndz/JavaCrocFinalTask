@@ -1,6 +1,6 @@
-package ru.ancndz.databaseService.provider;
+package ru.ancndz.databaseprovider;
 
-import org.postgresql.ds.PGSimpleDataSource;
+import org.apache.derby.jdbc.EmbeddedDataSource;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Properties;
 
 public class DataSourceProvider {
-    private PGSimpleDataSource pgSimpleDataSource = null;
+    private EmbeddedDataSource dataSource = null;
     private final Map<String, String> properties = new HashMap<>();
     
     public DataSourceProvider() throws IOException {
@@ -29,15 +29,16 @@ public class DataSourceProvider {
         }
     }
 
-    public PGSimpleDataSource getDataSource() {
-        if (pgSimpleDataSource == null) {
-            pgSimpleDataSource = new PGSimpleDataSource();
-            pgSimpleDataSource.setURL(properties.get("db_url"));
-            pgSimpleDataSource.setUser(properties.get("db_user"));
-            pgSimpleDataSource.setPassword(properties.get("db_pass"));
-            pgSimpleDataSource.setDatabaseName(properties.get("db_name"));
+    public EmbeddedDataSource getDataSource() {
+        if (dataSource == null) {
+            dataSource = new EmbeddedDataSource();
+            dataSource.setUser(properties.get("db_user"));
+            dataSource.setPassword(properties.get("db_pass"));
+            dataSource.setDatabaseName(properties.get("db_name"));
         }
-        return pgSimpleDataSource;
+        return dataSource;
     }
+
+
 
 }

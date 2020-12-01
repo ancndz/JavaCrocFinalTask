@@ -1,7 +1,7 @@
-package ru.ancndz.databaseService.repository;
+package ru.ancndz.repository;
 
-import org.postgresql.ds.PGSimpleDataSource;
-import ru.ancndz.objects.Record;
+import org.apache.derby.jdbc.EmbeddedDataSource;
+import ru.ancndz.model.Record;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -11,17 +11,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RecordRepository {
-    private final PGSimpleDataSource pgSimpleDataSource;
+    private final EmbeddedDataSource dataSource;
 
-    public RecordRepository(PGSimpleDataSource pgSimpleDataSource) {
-        this.pgSimpleDataSource = pgSimpleDataSource;
+    public RecordRepository(EmbeddedDataSource dataSource) {
+        this.dataSource = dataSource;
         initTable();
     }
 
 
     private void initTable() {
         System.out.printf("Start initializing %s table%n", Record.TABLE_NAME);
-        try (Connection connection = pgSimpleDataSource.getConnection();
+        try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement()) {
             DatabaseMetaData databaseMetadata = connection.getMetaData();
             ResultSet resultSet = databaseMetadata.getTables(
@@ -36,7 +36,7 @@ public class RecordRepository {
                         "create table "
                                 + Record.TABLE_NAME
                                 + " ("
-                                + "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY primary key, "
+                                + "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) primary key, "
                                 + "traffic_rating int,"
                                 + "accidents int," +
                                 "start_date date," +
@@ -85,14 +85,19 @@ public class RecordRepository {
     }
 
     public Integer addRecord(Record record) {
-        String sqlQuery = "insert into " + Record.TABLE_NAME + "(traffic_rating, accidents, start_date, start_time, end_date, end_time)" +
-                " values (?, ?, ?, ?, ?, ?) returning id";
-        try (Connection connection = pgSimpleDataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+        String sqlQuery = "insert into " + Record.TABLE_NAME + "(" +
+                "traffic_rating, accidents, start_date, start_time, end_date, end_time)" +
+                " values (?, ?, ?, ?, ?, ?)";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sqlQuery, Statement.RETURN_GENERATED_KEYS)) {
             setStatementValues(record, statement);
-            ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-            return resultSet.getInt(1);
+            statement.execute();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            } else {
+                return null;
+            }
         } catch (SQLException e) {
             printQueryException(e);
             return null;
@@ -100,7 +105,7 @@ public class RecordRepository {
     }
 
     public List<Record> findAll() {
-        try (Connection connection = pgSimpleDataSource.getConnection();
+        try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery("SELECT * FROM " + Record.TABLE_NAME);
             return createRecord(resultSet);
@@ -110,10 +115,9 @@ public class RecordRepository {
         return new ArrayList<>();
     }
 
-    public void updateRecord(Record record) {
+    public Integer updateRecord(Record record) {
         if (record.getID() == null) {
-            addRecord(record);
-            return;
+            return addRecord(record);
         }
         String sqlQuery = "update " + Record.TABLE_NAME + " set traffic_rating = ?," +
                 "accidents = ?, " +
@@ -122,19 +126,21 @@ public class RecordRepository {
                 "end_date = ?, " +
                 "end_time = ? " +
                 "where id = ?";
-        try (Connection connection = pgSimpleDataSource.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
             setStatementValues(record, statement);
             statement.setInt(7, record.getID());
             statement.execute();
+            return record.getID();
         } catch (SQLException e) {
             printQueryException(e);
+            return null;
         }
     }
 
     public void deleteById(Integer id) {
         String sqlQuery = "delete from " + Record.TABLE_NAME + " where id = ?";
-        try (Connection connection = pgSimpleDataSource.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
             statement.setInt(1, id);
             statement.execute();
@@ -145,7 +151,7 @@ public class RecordRepository {
 
     public void trimTable() {
         String sqlQuery = "truncate " + Record.TABLE_NAME + " RESTART IDENTITY";
-        try (Connection connection = pgSimpleDataSource.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
             statement.execute();
         } catch (SQLException e) {

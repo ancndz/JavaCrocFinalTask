@@ -1,10 +1,10 @@
-package ru.ancndz.databaseService.repository;
+package ru.ancndz.repository;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import ru.ancndz.databaseService.provider.DataSourceProvider;
-import ru.ancndz.objects.Record;
+import ru.ancndz.databaseprovider.DataSourceProvider;
+import ru.ancndz.model.Record;
 
 import java.io.IOException;
 import java.time.LocalDateTime;

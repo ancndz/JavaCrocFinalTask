@@ -1,4 +1,6 @@
-package ru.ancndz.objects;
+package ru.ancndz.recordtracker;
+
+import ru.ancndz.model.Record;
 
 import java.util.ArrayList;
 import java.util.List;

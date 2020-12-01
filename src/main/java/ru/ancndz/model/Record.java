@@ -1,4 +1,4 @@
-package ru.ancndz.objects;
+package ru.ancndz.model;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;

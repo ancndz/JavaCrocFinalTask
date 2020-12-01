@@ -1,11 +1,11 @@
-package ru.ancndz.xmlConverter;
+package ru.ancndz.xmlconverter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.ancndz.objects.Record;
-import ru.ancndz.objects.RecordVault;
+import ru.ancndz.model.Record;
+import ru.ancndz.recordtracker.RecordVault;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
