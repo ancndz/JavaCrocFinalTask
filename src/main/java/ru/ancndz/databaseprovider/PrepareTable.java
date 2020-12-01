@@ -5,8 +5,15 @@ import ru.ancndz.model.Record;
 import javax.sql.DataSource;
 import java.sql.*;
 
+/**
+ * Класс подготовки базы данных: создание таблиц, если их не существует
+ */
 public class PrepareTable {
 
+    /**
+     * Создание таблицы для {@link Record}
+     * @param dataSource {@link DataSource}
+     */
     public static void initRecordTable(DataSource dataSource) {
         System.out.printf("Start initializing %s table%n", Record.TABLE_NAME);
         try (Connection connection = dataSource.getConnection();

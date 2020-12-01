@@ -4,8 +4,14 @@ import java.io.*;
 
 public class XMLSaveUtil {
 
+    /**
+     * Путь до папки с сохраняемыми данными
+     */
     private static final String pathToFiles = "src/main/resources/xmlFiles/";
 
+    /**
+     * Создание папки
+     */
     private static void createPath() {
         try {
             File dir = new File(pathToFiles);
@@ -16,6 +22,10 @@ public class XMLSaveUtil {
         }
     }
 
+    /**
+     * Очистка папки от старых данных
+     * @throws IOException
+     */
     private static void clearDir() throws IOException {
         File workDir = new File(pathToFiles);
         File[] entries = workDir.listFiles();
@@ -31,6 +41,12 @@ public class XMLSaveUtil {
         }
     }
 
+    /**
+     * Запись XML в файл
+     * @param filename - String имя файла
+     * @param xmlString - String строка с XML
+     * @throws IOException
+     */
     public static void save(String filename, String xmlString) throws IOException {
         createPath();
         clearDir();
@@ -42,6 +58,10 @@ public class XMLSaveUtil {
         }
     }
 
+    /**
+     * Загрузка файла с диска (он в папке всегда один)
+     * @return
+     */
     public static String load() {
         File workDir = new File(pathToFiles);
         File[] entries = workDir.listFiles();

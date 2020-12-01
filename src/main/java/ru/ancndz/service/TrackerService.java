@@ -1,4 +1,4 @@
-package ru.ancndz;
+package ru.ancndz.service;
 
 import ru.ancndz.utils.XMLSaveUtil;
 import ru.ancndz.databaseprovider.DataSourceProvider;
@@ -10,11 +10,14 @@ import ru.ancndz.utils.XMLConvertUtil;
 import java.io.IOException;
 import java.util.List;
 
-public class Core {
+/**
+ * Сервис для работы с записями
+ */
+public class TrackerService {
     RecordRepository recordRepository;
     RecordVault recordVault;
 
-    public Core() {
+    public TrackerService() {
         recordRepository = prepareConnect();
         recordVault = new RecordVault();
     }
@@ -30,6 +33,10 @@ public class Core {
         }
     }
 
+    /**
+     * Получение записи с наибольшим рейтингом трафика
+     * @return Record
+     */
     public Record getHighestTrafficRecord() {
         if (recordRepository == null) {
             return null;
@@ -47,6 +54,10 @@ public class Core {
         return winner;
     }
 
+    /**
+     * Добавление {@link Record} в репозиторий {@link RecordRepository}
+     * @param record
+     */
     public void addValue(Record record) {
         this.recordRepository.addRecord(record);
     }

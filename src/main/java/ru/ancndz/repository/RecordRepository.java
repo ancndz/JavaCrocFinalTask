@@ -11,6 +11,9 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Репозиторий для {@link Record}
+ */
 public class RecordRepository {
     private final EmbeddedDataSource dataSource;
 
@@ -23,6 +26,12 @@ public class RecordRepository {
         System.out.println("Ошибка выполнения запроса: " + e.getMessage());
     }
 
+    /**
+     * Заполнение statement с нужными данными Record
+     * @param record {@link Record} с данными
+     * @param statement {@link PreparedStatement} - statement для заполнения
+     * @throws SQLException
+     */
     private void setStatementValues(Record record, PreparedStatement statement) throws SQLException {
         LocalDate start_date = record.getRecordDateTimeStart().toLocalDate();
         LocalTime start_time = record.getRecordDateTimeStart().toLocalTime();
@@ -36,6 +45,12 @@ public class RecordRepository {
         statement.setTime(6, Time.valueOf(end_time));
     }
 
+    /**
+     * Создание списка {@link Record} из {@link ResultSet}
+     * @param resultSet {@link ResultSet}, который пришел из запроса
+     * @return List of Record
+     * @throws SQLException
+     */
     private List<Record> createRecordFromResultSet(ResultSet resultSet) throws SQLException {
         List<Record> records = new ArrayList<>();
         while (resultSet.next()) {
@@ -50,6 +65,11 @@ public class RecordRepository {
         return records;
     }
 
+    /**
+     * Добавление записи в БД
+     * @param record {@link Record}
+     * @return Integer - ID записанного {@link Record}, null при ошибке
+     */
     public Integer addRecord(Record record) {
         String sqlQuery = "insert into " + Record.TABLE_NAME + "(" +
                 "traffic_rating, accidents, start_date, start_time, end_date, end_time)" +
@@ -70,6 +90,10 @@ public class RecordRepository {
         }
     }
 
+    /**
+     * Получение всех строк из таблицы
+     * @return
+     */
     public List<Record> findAll() {
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement()) {
@@ -81,6 +105,12 @@ public class RecordRepository {
         return new ArrayList<>();
     }
 
+    /**
+     * Обновление заданной записи
+     * Если у нее нет ID (она была создана не из данных от БД), она записывается туда как новая
+     * @param record обновляемая {@link Record}
+     * @return Integer ID записи
+     */
     public Integer updateRecord(Record record) {
         if (record.getID() == null) {
             return addRecord(record);
@@ -104,6 +134,10 @@ public class RecordRepository {
         }
     }
 
+    /**
+     * Удаление записи по ее ID
+     * @param id {@link Integer} ID записи ({@link Record})
+     */
     public void deleteById(Integer id) {
         String sqlQuery = "delete from " + Record.TABLE_NAME + " where id = ?";
         try (Connection connection = dataSource.getConnection();
@@ -115,6 +149,9 @@ public class RecordRepository {
         }
     }
 
+    /**
+     * Полная очистка таблицы
+     */
     public void deleteAll() {
         String sqlQuery = "truncate " + Record.TABLE_NAME;
         try (Connection connection = dataSource.getConnection();

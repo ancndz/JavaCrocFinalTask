@@ -1,4 +1,4 @@
-package ru.ancndz;
+package ru.ancndz.service;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -8,9 +8,9 @@ import ru.ancndz.model.Record;
 
 import java.time.LocalDateTime;
 
-class CoreTest {
+class TrackerServiceTest {
 
-    Core core;
+    TrackerService trackerService;
     Record testRecord1;
     Record testRecord2;
     Record testRecord3;
@@ -19,7 +19,7 @@ class CoreTest {
 
     @BeforeEach
     void setUp() {
-        core = new Core();
+        trackerService = new TrackerService();
         this.testRecord1 = new Record(3, 5, LocalDateTime.now().minusMinutes(50), LocalDateTime.now().minusMinutes(40));
         this.testRecord2 = new Record(6, 2, LocalDateTime.now().minusMinutes(30), LocalDateTime.now().minusMinutes(20));
         this.testRecord3 = new Record(4, 7, LocalDateTime.now().plusMinutes(10), LocalDateTime.now().plusMinutes(20));
@@ -29,18 +29,18 @@ class CoreTest {
 
     @AfterEach
     void tearDown() {
-        core.recordRepository.deleteAll();
+        trackerService.recordRepository.deleteAll();
     }
 
     @Test
     void getHighestTrafficRecord() {
-        core.addValue(testRecord1);
-        Assertions.assertEquals(testRecord1, core.getHighestTrafficRecord());
+        trackerService.addValue(testRecord1);
+        Assertions.assertEquals(testRecord1, trackerService.getHighestTrafficRecord());
 
-        core.addValue(testRecord2);
-        core.addValue(testRecord3);
-        core.addValue(testRecord4);
+        trackerService.addValue(testRecord2);
+        trackerService.addValue(testRecord3);
+        trackerService.addValue(testRecord4);
 
-        Assertions.assertEquals(testRecord4, core.getHighestTrafficRecord());
+        Assertions.assertEquals(testRecord4, trackerService.getHighestTrafficRecord());
     }
 }

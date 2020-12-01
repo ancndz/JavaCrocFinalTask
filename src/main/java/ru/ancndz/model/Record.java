@@ -81,10 +81,20 @@ public class Record {
         this.recordDateTimeEndString = convertToString(recordDateTimeEnd);
     }
 
+    /**
+     * Преобразование даты и времени в строку (формат - formatter)
+     * @param dateTime - {@link LocalDateTime}
+     * @return String "dd-MM-yyyy HH:mm:ss"
+     */
     private String convertToString(LocalDateTime dateTime) {
         return dateTime.format(formatter);
     }
 
+    /**
+     * Преобразование строки "dd-MM-yyyy HH:mm:ss" с датой и временем в LocalDateTime
+     * @param dateTimeString String "dd-MM-yyyy HH:mm:ss"
+     * @return LocalDateTime
+     */
     private LocalDateTime parseFromString(String dateTimeString) {
         return LocalDateTime.parse(dateTimeString, formatter);
     }
@@ -117,6 +127,7 @@ public class Record {
     public LocalDateTime getRecordDateTimeStart() {
         return recordDateTimeStart;
     }
+
 
     public void setRecordDateTimeStart(LocalDateTime recordDateTimeStart) {
         this.recordDateTimeStartString = convertToString(recordDateTimeStart);

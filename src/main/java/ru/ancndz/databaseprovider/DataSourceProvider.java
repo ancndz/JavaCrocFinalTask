@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+/**
+ * Класс соединения с базой
+ */
 public class DataSourceProvider {
     private EmbeddedDataSource dataSource = null;
     private final Map<String, String> properties = new HashMap<>();
