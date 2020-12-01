@@ -38,6 +38,7 @@ public class DataSourceProvider {
             dataSource.setUser(properties.get("db_user"));
             dataSource.setPassword(properties.get("db_pass"));
             dataSource.setDatabaseName(properties.get("db_name"));
+            dataSource.setCreateDatabase("create");
         }
         return dataSource;
     }

@@ -151,14 +151,17 @@ public class RecordRepository {
 
     /**
      * Полная очистка таблицы
+     * @return true если очистка успешно завершилась, false в ином случае
      */
-    public void deleteAll() {
-        String sqlQuery = "truncate " + Record.TABLE_NAME;
+    public Boolean deleteAll() {
+        String sqlQuery = "truncate table " + Record.TABLE_NAME;
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
             statement.execute();
+            return true;
         } catch (SQLException e) {
             printQueryException(e);
+            return false;
         }
     }
 }

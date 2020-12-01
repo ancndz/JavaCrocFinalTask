@@ -13,3 +13,7 @@ target/
 # Test Resources
 src/test/resources/*
 src/main/resources/xmlFiles/*
+
+# Derby
+*.log
+/test_db/

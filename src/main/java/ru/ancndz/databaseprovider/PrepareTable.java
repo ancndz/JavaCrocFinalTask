@@ -22,7 +22,7 @@ public class PrepareTable {
             ResultSet resultSet = databaseMetadata.getTables(
                     null,
                     null,
-                    Record.TABLE_NAME,
+                    Record.TABLE_NAME.toUpperCase(),
                     new String[]{"TABLE"});
             if (resultSet.next()) {
                 System.out.println("Table has already been initialized");

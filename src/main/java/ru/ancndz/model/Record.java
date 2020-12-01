@@ -57,7 +57,7 @@ public class Record {
      * Форматтер для конвертации времени в строку и обратно
      */
     @XmlTransient
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH-mm-ss");
 
     public Record() {
     }
