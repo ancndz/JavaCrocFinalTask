@@ -1,11 +1,11 @@
 package ru.ancndz;
 
-import ru.ancndz.fileservice.InputOutputXML;
+import ru.ancndz.utils.XMLSaveUtil;
 import ru.ancndz.databaseprovider.DataSourceProvider;
 import ru.ancndz.repository.RecordRepository;
 import ru.ancndz.model.Record;
 import ru.ancndz.recordtracker.RecordVault;
-import ru.ancndz.xmlconverter.JAXBConverter;
+import ru.ancndz.utils.XMLConvertUtil;
 
 import java.io.IOException;
 import java.util.List;
@@ -13,14 +13,10 @@ import java.util.List;
 public class Core {
     RecordRepository recordRepository;
     RecordVault recordVault;
-    JAXBConverter jaxbConverter;
-    InputOutputXML inputOutputXML;
 
     public Core() {
         recordRepository = prepareConnect();
         recordVault = new RecordVault();
-        jaxbConverter = new JAXBConverter();
-        inputOutputXML = new InputOutputXML();
     }
 
     private RecordRepository prepareConnect() {
@@ -44,7 +40,7 @@ public class Core {
         Record winner = recordVault.getHighestTrafficRecord();
 
         try {
-            inputOutputXML.save(winner.getRecordDateTimeStartString(), jaxbConverter.toXml(winner));
+            XMLSaveUtil.save(winner.getRecordDateTimeStartString(), XMLConvertUtil.toXml(winner));
         } catch (IOException e) {
             e.printStackTrace();
         }

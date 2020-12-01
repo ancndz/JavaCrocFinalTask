@@ -1,13 +1,12 @@
-package ru.ancndz.fileservice;
-
+package ru.ancndz.utils;
 
 import java.io.*;
 
-public class InputOutputXML {
+public class XMLSaveUtil {
 
-    private final String pathToFiles = "src/main/resources/xmlFiles/";
+    private static final String pathToFiles = "src/main/resources/xmlFiles/";
 
-    private void createPath() {
+    private static void createPath() {
         try {
             File dir = new File(pathToFiles);
             dir.mkdirs();
@@ -17,7 +16,7 @@ public class InputOutputXML {
         }
     }
 
-    private void clearDir() throws IOException {
+    private static void clearDir() throws IOException {
         File workDir = new File(pathToFiles);
         File[] entries = workDir.listFiles();
         if (entries == null) {
@@ -32,7 +31,7 @@ public class InputOutputXML {
         }
     }
 
-    public void save(String filename, String xmlString) throws IOException {
+    public static void save(String filename, String xmlString) throws IOException {
         createPath();
         clearDir();
         String path = pathToFiles + filename + ".xml";
@@ -43,7 +42,7 @@ public class InputOutputXML {
         }
     }
 
-    public String load() {
+    public static String load() {
         File workDir = new File(pathToFiles);
         File[] entries = workDir.listFiles();
         if (entries == null) {

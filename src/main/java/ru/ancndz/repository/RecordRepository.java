@@ -1,6 +1,7 @@
 package ru.ancndz.repository;
 
 import org.apache.derby.jdbc.EmbeddedDataSource;
+import ru.ancndz.databaseprovider.PrepareTable;
 import ru.ancndz.model.Record;
 
 import java.sql.*;
@@ -15,42 +16,7 @@ public class RecordRepository {
 
     public RecordRepository(EmbeddedDataSource dataSource) {
         this.dataSource = dataSource;
-        initTable();
-    }
-
-
-    private void initTable() {
-        System.out.printf("Start initializing %s table%n", Record.TABLE_NAME);
-        try (Connection connection = dataSource.getConnection();
-             Statement statement = connection.createStatement()) {
-            DatabaseMetaData databaseMetadata = connection.getMetaData();
-            ResultSet resultSet = databaseMetadata.getTables(
-                    null,
-                    null,
-                    Record.TABLE_NAME,
-                    new String[]{"TABLE"});
-            if (resultSet.next()) {
-                System.out.println("Table has already been initialized");
-            } else {
-                statement.executeUpdate(
-                        "create table "
-                                + Record.TABLE_NAME
-                                + " ("
-                                + "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) primary key, "
-                                + "traffic_rating int,"
-                                + "accidents int," +
-                                "start_date date," +
-                                "start_time time," +
-                                "end_date date," +
-                                "end_time time"
-                                + ")");
-                System.out.println("Table was successfully initialized");
-            }
-        } catch (SQLException e) {
-            System.out.println("Error occurred during table initializing: " + e.getMessage());
-        } finally {
-            System.out.println("=========================");
-        }
+        PrepareTable.initRecordTable(dataSource);
     }
 
     private void printQueryException(Exception e) {

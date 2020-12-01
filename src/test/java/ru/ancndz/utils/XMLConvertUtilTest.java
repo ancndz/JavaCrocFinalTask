@@ -1,4 +1,4 @@
-package ru.ancndz.xmlconverter;
+package ru.ancndz.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Assertions;
@@ -11,13 +11,11 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class JAXBConverterTest {
+public class XMLConvertUtilTest {
 
     private RecordVault recordVault;
 
     private Record testRecord;
-
-    private final JAXBConverter jaxbConverter = new JAXBConverter();
 
     private String xmlString;
 
@@ -30,15 +28,15 @@ public class JAXBConverterTest {
     @Test
     public void testFromXml() throws IOException {
         this.recordVault.addRecord(this.testRecord);
-        this.xmlString = jaxbConverter.toXml(this.recordVault.getHighestTrafficRecord());
-        Record recordFromXml = jaxbConverter.fromXml(this.xmlString, Record.class);
+        this.xmlString = XMLConvertUtil.toXml(this.recordVault.getHighestTrafficRecord());
+        Record recordFromXml = XMLConvertUtil.fromXml(this.xmlString, Record.class);
         Assertions.assertEquals(this.recordVault.getHighestTrafficRecord(), recordFromXml);
     }
 
     @Test
     public void testToXml() throws JsonProcessingException {
         this.recordVault.addRecord(this.testRecord);
-        this.xmlString = jaxbConverter.toXml(this.recordVault.getHighestTrafficRecord());
+        this.xmlString = XMLConvertUtil.toXml(this.recordVault.getHighestTrafficRecord());
         System.out.println(xmlString);
     }
 }
