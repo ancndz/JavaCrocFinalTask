@@ -8,15 +8,25 @@
     <artifactId>JavaCrocFinalTask</artifactId>
     <version>1.0</version>
 
+    <properties>
+        <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+        <target.source.version>8</target.source.version>
+        <junit.version>4.12</junit.version>
+        <junit-jupiter.version>RELEASE</junit-jupiter.version>
+        <jackson.version>2.9.10</jackson.version>
+        <jakarta.version>2.3.3</jakarta.version>
+        <derby.version>10.13.1.1</derby.version>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <target>8</target>
-                    <source>8</source>
+                    <target>${target.source.version}</target>
+                    <source>${target.source.version}</source>
                 </configuration>
             </plugin>
         </plugins>
@@ -26,23 +36,29 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-xml</artifactId>
-            <version>2.9.10</version>
+            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-jaxb-annotations</artifactId>
-            <version>2.9.10</version>
+            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>jakarta.xml.bind</groupId>
             <artifactId>jakarta.xml.bind-api</artifactId>
-            <version>2.3.3</version>
+            <version>${jakarta.version}</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -50,10 +66,9 @@
             <version>42.2.14.jre7</version>
         </dependency>
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>RELEASE</version>
-            <scope>test</scope>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derby</artifactId>
+            <version>10.13.1.1</version>
         </dependency>
     </dependencies>
 
